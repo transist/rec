@@ -47,10 +47,10 @@ class RecorderViewController < UIViewController
     @label_stop.setHidden(false)
     @label_rec.text = 'Recording...'
 
-    file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', "#{Time.now.strftime('%Y%m%d%H%M%S'))}.caf")
+    @file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', "#{Time.now.strftime('%Y%m%d%H%M%S')}.caf"))
     settings = NSDictionary.dictionaryWithObjectsAndKeys(nil)
 
-    @recorder = AVAudioRecorder.alloc.initWithURL(file_url, settings:settings, error:nil)
+    @recorder = AVAudioRecorder.alloc.initWithURL(@file_url, settings:settings, error:nil)
 
     @recorder.record
 
@@ -68,7 +68,11 @@ class RecorderViewController < UIViewController
   end
 
   def play
-    puts "play"    
+    puts "play"
+
+    @player = AVAudioPlayer.alloc.initWithContentsOfURL(@file_url, error:nil)
+    @player.play
+
   end
 
 end
