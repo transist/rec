@@ -12,15 +12,15 @@ class RecorderViewController < UIViewController
 
     self.view.setUserInteractionEnabled(true)
 
-    @label_rec.whenTapped do
+    @label_rec.when_tapped do
       rec
     end
 
-    @label_stop.whenTapped do
+    @label_stop.when_tapped do
       stop
     end
 
-    @label_play.whenTapped do
+    @label_play.when_tapped do
       play
     end
 
@@ -47,12 +47,17 @@ class RecorderViewController < UIViewController
     @label_stop.setHidden(false)
     @label_rec.text = 'Recording...'
 
-    @file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', "#{Time.now.strftime('%Y%m%d%H%M%S')}.caf"))
-    settings = NSDictionary.dictionaryWithObjectsAndKeys(nil)
+    @file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', "#{Time.now.strftime('%Y%m%d%H%M%S')}.aac"))
+    settings = {"AVFormatIDKey" => KAudioFormatMPEG4AAC}
+    errorPointer = Pointer.new(:object)
+    @recorder = AVAudioRecorder.alloc.initWithURL(@file_url, settings:settings, error:errorPointer)
 
-    @recorder = AVAudioRecorder.alloc.initWithURL(@file_url, settings:settings, error:nil)
+    puts "*" * 80
+    puts errorPointer[0].localizedDescription if errorPointer && errorPointer[0]
 
-    @recorder.record
+    @recorder.record 
+
+    puts "recorded!!"
 
   end
 
