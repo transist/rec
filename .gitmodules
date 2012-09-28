@@ -1,0 +1,3 @@
+[submodule "vendor/UIButton-Glossy"]
+	path = vendor/UIButton-Glossy
+	url = git://github.com/GeorgeMcMullen/UIButton-Glossy.git
