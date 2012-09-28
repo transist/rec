@@ -1,4 +1,4 @@
-class TrackView < UIView
+class TrackView < UILabel
   attr_accessor :file_url
 
   def self.make_track(options)
