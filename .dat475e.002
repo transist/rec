@@ -1,0 +1,82 @@
+exit
+file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', '20120927234801.aac'))
+player.play
+record_sessions
+@record_sessions
+@record_sessions << 1
+record_sessions = []
+LocationsController
+exit
+arr = []
+arr << 1
+arr.last
+exit
+exit
+exit
+exit
+exit
+exit
+NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', '20120927233910.aac'))
+s = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', '20120927233910.aac'))
+AVAudioPlayer.alloc.initWithContentsOfURL(s, error:error_pointer)
+error_pointer = Pointer.new(:object)
+AVAudioPlayer.alloc.initWithContentsOfURL(s, error:error_pointer)
+av = AVAudioPlayer.alloc.initWithContentsOfURL(s, error:error_pointer)
+av.play
+av.play
+exit
+exit
+AVAudioPlayer.alloc.initWithContentsOfURL(s, error:error_pointer)
+exit
+file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', '20120927234801.aac'))
+player = AVAudioPlayer.alloc.initWithContentsOfURL(file_url, error:error_pointer)
+error_pointer = Pointer.new(:obejct)
+player = AVAudioPlayer.alloc.initWithContentsOfURL(file_url, error:error_pointer)
+error_pointer
+error_pointer = Pointer.new(:object)
+player = AVAudioPlayer.alloc.initWithContentsOfURL(file_url, error:error_pointer)
+player
+player.play
+exit
+file_name = '20120927235147.aac'
+file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', file_name))
+error_pointer = Pointer.new(:object)
+player = AVAudioPlayer.alloc.initWithContentsOfURL(file_url, error:error_pointer)
+error_pointer[9]
+error_pointer[0]
+player.play
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit
+exit

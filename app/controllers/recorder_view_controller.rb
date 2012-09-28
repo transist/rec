@@ -33,6 +33,7 @@ class RecorderViewController < UIViewController
     label.textColor = options[:color] || UIColor.redColor
     label.textAlignment = options[:alignment] || UITextAlignmentCenter
     label.setHidden(options[:hidden] || false)
+    label.layer.cornerRadius = options[:corner_radius] || 0
     label
   end
 
@@ -60,27 +61,45 @@ class RecorderViewController < UIViewController
     @recorder.stop if @recorder
 
     @count ||= 0
-    track = make_label(frame: [[20, 40 * @count + 10], [280, 30]], text: @file_name, font_size: 20, color: UIColor.darkGrayColor)
+    track = make_label(frame: [[20, 40 * @count + 10], [280, 30]], text: @file_name, font_size: 20, color: UIColor.darkGrayColor, corner_radius: 10.0)
     track.file_url = @file_url
 
     @tracks << track
 
     @tracks.last.when_tapped do |r|
-      play(r.view.file_url)
+      play(r.view)
     end
 
-    self.view.addSubview(track)
+    @tracks.last.when_pressed do |r|
+      puts "yooooo"
+      r.view.removeFromSuperview
+    end
+
+    UIView.animateWithDuration(0.5, 
+      animations: lambda{
+        self.view.addSubview(track)    
+      })
 
     @count += 1
 
   end
 
-  def play(file_url)
+  def play(track)
     puts "play"
 
+    file_url = track.file_url
+
     @player = AVAudioPlayer.alloc.initWithContentsOfURL(file_url, error:nil)
+    @player.delegate = self
+    @current_track = track
+    @old_track_name = @current_track.text
+    @current_track.text = 'Playing...'
     @player.play
 
+  end
+
+  def audioPlayerDidFinishPlaying(player, successfully:flag)
+    @current_track.text = @old_track_name
   end
 
 end
