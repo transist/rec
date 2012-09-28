@@ -6,35 +6,12 @@ class RecorderViewController < UIViewController
   end
 
   def viewDidLoad
-    @label_rec = make_label(frame: [[10, 60], [300, 40]], text: 'Rec', font_size: 30, color: UIColor.redColor)
-    @label_stop = make_label(frame: [[10, 120], [300, 40]], text: 'Stop', font_size: 30, color: UIColor.orangeColor, hidden: true)
-    @label_play = make_label(frame: [[10, 180], [300, 40]], text: 'Play', font_size: 30, color: UIColor.yellowColor, hidden: true)
-
-    self.view.setUserInteractionEnabled(true)
-
-    @label_rec.when_tapped do
-      rec
-    end
-
-    @label_stop.when_tapped do
-      stop
-    end
-
-    @label_play.when_tapped do
-      play
-    end
-
-    self.view.addSubview(@label_rec)
-    self.view.addSubview(@label_stop)
-    self.view.addSubview(@label_play)
-
-    @state = :stopped
-
     @button = UIButton.alloc.initWithFrame([[20, 400], [280, 40]])
     @button.setTitle("Rec", forState:UIControlStateNormal)
     @button.setTitle("Recording", forState:UIControlStateHighlighted)
     @button.setTitleColor(UIColor.darkGrayColor, forState:UIControlStateNormal)
     @button.backgroundColor = UIColor.colorWithWhite(1.0, alpha:0.7)
+    @button.makeGlossy
 
     @button.when(UIControlEventTouchDown) do      
       rec
@@ -45,10 +22,12 @@ class RecorderViewController < UIViewController
     end
 
     self.view.addSubview(@button)
+
+    @tracks = []
   end
 
   def make_label(options)
-    label = UILabel.alloc.initWithFrame(options[:frame])
+    label = TrackView.alloc.initWithFrame(options[:frame])
     label.text = options[:text] || 'Label Text'
     label.font = UIFont.boldSystemFontOfSize(options[:font_size]) || 30
     label.textColor = options[:color] || UIColor.redColor
@@ -59,11 +38,9 @@ class RecorderViewController < UIViewController
 
   def rec
     puts "rec!!!"
+    @file_name = "#{Time.now.strftime('%Y%m%d%H%M%S')}.aac"
+    @file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', @file_name))
 
-    @label_stop.setHidden(false)
-    @label_rec.text = 'Recording...'
-
-    @file_url = NSURL.fileURLWithPath(File.join(NSHomeDirectory(), 'Documents', "#{Time.now.strftime('%Y%m%d%H%M%S')}.aac"))
     settings = {"AVFormatIDKey" => KAudioFormatMPEG4AAC}
     errorPointer = Pointer.new(:object)
     @recorder = AVAudioRecorder.alloc.initWithURL(@file_url, settings:settings, error:errorPointer)
@@ -81,17 +58,27 @@ class RecorderViewController < UIViewController
     puts "stop!!!"
 
     @recorder.stop if @recorder
-    @label_rec.text = 'Rec'
-    @label_stop.setHidden(true)
-    @label_play.setHidden(false)
 
-    @state = :stopped
+    @count ||= 0
+    track = make_label(frame: [[20, 40 * @count + 10], [280, 30]], text: @file_name, font_size: 20, color: UIColor.darkGrayColor)
+    track.file_url = @file_url
+
+    @tracks << track
+
+    @tracks.last.when_tapped do |r|
+      play(r.view.file_url)
+    end
+
+    self.view.addSubview(track)
+
+    @count += 1
+
   end
 
-  def play
+  def play(file_url)
     puts "play"
 
-    @player = AVAudioPlayer.alloc.initWithContentsOfURL(@file_url, error:nil)
+    @player = AVAudioPlayer.alloc.initWithContentsOfURL(file_url, error:nil)
     @player.play
 
   end
