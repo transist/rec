@@ -2,7 +2,7 @@ class RecorderViewController < UIViewController
 
   def loadView
     self.view = UIView.alloc.initWithFrame(UIScreen.mainScreen.applicationFrame)
-    self.view.backgroundColor = UIColor.grayColor
+    self.view.backgroundColor = UIColor.scrollViewTexturedBackgroundColor
   end
 
   def viewDidLoad
